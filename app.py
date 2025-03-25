@@ -34,5 +34,6 @@ def software_development():
 def art_department():
     return render_template('art-department.html')
 
+# Für lokale Entwicklung
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
