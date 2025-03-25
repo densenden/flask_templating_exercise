@@ -2,14 +2,13 @@ from flask import Flask, render_template, request
 from http.server import BaseHTTPRequestHandler
 import json
 
+app = Flask(__name__)
+
 app.config.update(
     SERVER_NAME='localhost:5002',
     APPLICATION_ROOT='/',
     PREFERRED_URL_SCHEME='http'
 )
-
-# Flask-Anwendung für Vercel Serverless Deployment
-app = Flask(__name__)
 
 @app.route('/')
 def index():
