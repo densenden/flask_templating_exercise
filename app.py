@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -33,6 +33,11 @@ def software_development():
 @app.route('/art-department')
 def art_department():
     return render_template('art-department.html')
+
+# Für Vercel Serverless
+def handler(request):
+    with app.request_context(request):
+        return app.dispatch_request()
 
 # Für lokale Entwicklung
 if __name__ == '__main__':
