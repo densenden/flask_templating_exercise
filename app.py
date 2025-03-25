@@ -37,31 +37,43 @@ def art_department():
     return render_template('art-department.html')
 
 # Für Vercel Serverless
-def handler(request):
-    """Handle incoming requests."""
-    if request.method == "GET":
-        path = request.path
-        if path == "/":
-            return app.view_functions["index"]()
-        elif path == "/about":
-            return app.view_functions["about"]()
-        elif path == "/services":
-            return app.view_functions["services"]()
-        elif path == "/services/brand-development":
-            return app.view_functions["brand_development"]()
-        elif path == "/services/webdesign":
-            return app.view_functions["webdesign"]()
-        elif path == "/mediation":
-            return app.view_functions["mediation"]()
-        elif path == "/software-development":
-            return app.view_functions["software_development"]()
-        elif path == "/art-department":
-            return app.view_functions["art_department"]()
-        else:
-            return "Not Found", 404
-    else:
-        return "Method not allowed", 405
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        try:
+            path = self.path
+            if path == "/":
+                response = app.view_functions["index"]()
+            elif path == "/about":
+                response = app.view_functions["about"]()
+            elif path == "/services":
+                response = app.view_functions["services"]()
+            elif path == "/services/brand-development":
+                response = app.view_functions["brand_development"]()
+            elif path == "/services/webdesign":
+                response = app.view_functions["webdesign"]()
+            elif path == "/mediation":
+                response = app.view_functions["mediation"]()
+            elif path == "/software-development":
+                response = app.view_functions["software_development"]()
+            elif path == "/art-department":
+                response = app.view_functions["art_department"]()
+            else:
+                self.send_response(404)
+                self.send_header('Content-type', 'text/plain')
+                self.end_headers()
+                self.wfile.write(b"Not Found")
+                return
+
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(str(response).encode())
+        except Exception as e:
+            self.send_response(500)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(str(e).encode())
 
 # Für lokale Entwicklung
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)
