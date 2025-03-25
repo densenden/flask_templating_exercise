@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from http.server import BaseHTTPRequestHandler
+import json
 
 app = Flask(__name__)
 
@@ -36,15 +37,30 @@ def art_department():
     return render_template('art-department.html')
 
 # Für Vercel Serverless
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        with app.request_context(request):
-            response = app.dispatch_request()
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(str(response).encode())
-            return
+def handler(request):
+    """Handle incoming requests."""
+    if request.method == "GET":
+        path = request.path
+        if path == "/":
+            return app.view_functions["index"]()
+        elif path == "/about":
+            return app.view_functions["about"]()
+        elif path == "/services":
+            return app.view_functions["services"]()
+        elif path == "/services/brand-development":
+            return app.view_functions["brand_development"]()
+        elif path == "/services/webdesign":
+            return app.view_functions["webdesign"]()
+        elif path == "/mediation":
+            return app.view_functions["mediation"]()
+        elif path == "/software-development":
+            return app.view_functions["software_development"]()
+        elif path == "/art-department":
+            return app.view_functions["art_department"]()
+        else:
+            return "Not Found", 404
+    else:
+        return "Method not allowed", 405
 
 # Für lokale Entwicklung
 if __name__ == '__main__':
