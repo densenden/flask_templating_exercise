@@ -202,6 +202,7 @@ body {
     color: var(--color-black);
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
+    text-decoration: none;
 }
 
 /* Dropdown Menu */
@@ -220,6 +221,7 @@ body {
 
 .dropdown:hover .dropdown-menu {
     display: block;
+    text-decoration: none;
 }
 
 .dropdown-menu li {
@@ -237,6 +239,7 @@ body {
 .dropdown-menu a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--color-black);
+    text-decoration: none;
 }
 
 /* Container Styles */
