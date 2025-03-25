@@ -41,34 +41,35 @@ def art_department():
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            path = self.path
-            if path == "/":
-                response = app.view_functions["index"]()
-            elif path == "/about":
-                response = app.view_functions["about"]()
-            elif path == "/services":
-                response = app.view_functions["services"]()
-            elif path == "/services/brand-development":
-                response = app.view_functions["brand_development"]()
-            elif path == "/services/webdesign":
-                response = app.view_functions["webdesign"]()
-            elif path == "/mediation":
-                response = app.view_functions["mediation"]()
-            elif path == "/software-development":
-                response = app.view_functions["software_development"]()
-            elif path == "/art-department":
-                response = app.view_functions["art_department"]()
-            else:
-                self.send_response(404)
-                self.send_header('Content-type', 'text/plain')
-                self.end_headers()
-                self.wfile.write(b"Not Found")
-                return
+            with app.app_context():
+                path = self.path
+                if path == "/":
+                    response = app.view_functions["index"]()
+                elif path == "/about":
+                    response = app.view_functions["about"]()
+                elif path == "/services":
+                    response = app.view_functions["services"]()
+                elif path == "/services/brand-development":
+                    response = app.view_functions["brand_development"]()
+                elif path == "/services/webdesign":
+                    response = app.view_functions["webdesign"]()
+                elif path == "/mediation":
+                    response = app.view_functions["mediation"]()
+                elif path == "/software-development":
+                    response = app.view_functions["software_development"]()
+                elif path == "/art-department":
+                    response = app.view_functions["art_department"]()
+                else:
+                    self.send_response(404)
+                    self.send_header('Content-type', 'text/plain')
+                    self.end_headers()
+                    self.wfile.write(b"Not Found")
+                    return
 
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(str(response).encode())
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                self.wfile.write(str(response).encode())
         except Exception as e:
             self.send_response(500)
             self.send_header('Content-type', 'text/plain')
