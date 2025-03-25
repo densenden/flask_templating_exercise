@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from http.server import BaseHTTPRequestHandler
 
 app = Flask(__name__)
 
@@ -35,9 +36,15 @@ def art_department():
     return render_template('art-department.html')
 
 # Für Vercel Serverless
-def handler(request):
-    with app.request_context(request):
-        return app.dispatch_request()
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        with app.request_context(request):
+            response = app.dispatch_request()
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(str(response).encode())
+            return
 
 # Für lokale Entwicklung
 if __name__ == '__main__':
