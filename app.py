@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from http.server import BaseHTTPRequestHandler
 import json
 
+# Flask-Anwendung für Vercel Serverless Deployment
 app = Flask(__name__)
 
 app.config.update(
